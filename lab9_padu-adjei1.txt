@@ -1,0 +1,59 @@
+
+PLAY [Configure CentOS 7.x VM] *************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [myvm]
+ok: [vmlab]
+
+TASK [Update Apache (httpd)] ***************************************************
+ok: [vmlab]
+ok: [myvm]
+
+TASK [Install EPEL repository] *************************************************
+ok: [vmlab]
+ok: [myvm]
+
+TASK [Remove 'tree' package] ***************************************************
+changed: [vmlab]
+changed: [myvm]
+
+TASK [Set the hostname to Seneca ID] *******************************************
+ok: [myvm]
+ok: [vmlab]
+
+TASK [Create a new user with sudo access] **************************************
+ok: [myvm]
+ok: [vmlab]
+
+TASK [Configure SSH access for the new user] ***********************************
+ok: [vmlab]
+ok: [myvm]
+
+TASK [Grant passwordless sudo access to the new user] **************************
+ok: [myvm]
+ok: [vmlab]
+
+TASK [Setup directory structure for labs] **************************************
+ok: [vmlab] => (item=1)
+ok: [myvm] => (item=1)
+ok: [vmlab] => (item=2)
+ok: [myvm] => (item=2)
+ok: [vmlab] => (item=3)
+ok: [myvm] => (item=3)
+ok: [vmlab] => (item=4)
+ok: [myvm] => (item=4)
+ok: [vmlab] => (item=5)
+ok: [myvm] => (item=5)
+ok: [vmlab] => (item=6)
+ok: [myvm] => (item=6)
+ok: [myvm] => (item=7)
+ok: [vmlab] => (item=7)
+ok: [myvm] => (item=8)
+ok: [vmlab] => (item=8)
+ok: [myvm] => (item=9)
+ok: [vmlab] => (item=9)
+
+PLAY RECAP *********************************************************************
+myvm                       : ok=9    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+vmlab                      : ok=9    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
