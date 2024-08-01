@@ -1,0 +1,57 @@
+---
+- name: Configure CentOS 7.x VM
+  hosts: all
+  become: yes
+  vars:
+    seneca_id: padu-adjei1
+  tasks:
+    - name: Update Apache (httpd)
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Install EPEL repository
+      yum:
+        name: epel-release
+        state: present
+
+    - name: Remove 'tree' package
+      yum:
+        name: tree
+        state: absent
+
+    - name: Set the hostname to Seneca ID
+      hostname:
+        name: "{{ seneca_id }}"
+
+    - name: Create a new user with sudo access
+      user:
+        name: "{{ seneca_id }}"
+        state: present
+        groups: wheel
+        append: yes
+        shell: /bin/bash
+
+    - name: Configure SSH access for the new user
+      ansible.posix.authorized_key:
+        user: "{{ seneca_id }}"
+        state: present
+        key: "{{ lookup('file', '/home/padu-adjei1/.ssh/id_rsa.pub') }}"
+
+    - name: Grant passwordless sudo access to the new user
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%{{ seneca_id }} ALL=(ALL) NOPASSWD: ALL'
+        line: '%{{ seneca_id }} ALL=(ALL) NOPASSWD: ALL'
+        validate: '/usr/sbin/visudo -cf %s'
+
+    - name: Setup directory structure for labs
+      file:
+        path: "/home/{{ seneca_id }}/ops445/lab{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ seneca_id }}"
+        group: "{{ seneca_id }}"
+      loop: "{{ range(1, 10) }}"
+
